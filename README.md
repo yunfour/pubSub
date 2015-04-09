@@ -1,7 +1,7 @@
 #PubSub
 
 
-这是一个CMD模块，建议使用seajs加载调用该模块提供的功能。该模块抛出了一个JS的类（构造函数），这个类（构造函数）是通过createClass函数创建的，因此其依赖了createClass模块，关于createClass模块的使用请参考：https://github.com/yunfour/createClass。在该项目中主模块依赖的其他组件、类库的代码均放到了lib/ 目录下，createClass的代码也不例外。
+这是一个CMD模块，建议使用seajs加载调用该模块提供的功能。该模块抛出了一个JS的类（构造函数），这个类（构造函数）是通过createClass函数创建的，因此其依赖了createClass模块，关于createClass模块的使用请参考：[https://github.com/yunfour/createClass]。在该项目中主模块依赖的其他组件、类库的代码均放到了lib/ 目录下，createClass的代码也不例外。
 
 
 ## 实现原理
