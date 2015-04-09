@@ -18,6 +18,7 @@ var PubSub = createClass({
     methods: {
 
         /**
+         * @method
          * @param {String} eventsName 事件名称；必填；支持多个事件名称，每个事件使用","分割
          * @param {Function} callback 事件回调函数；必填
          * @return {PubSub} 当前实例（对象）
@@ -36,6 +37,7 @@ var PubSub = createClass({
         },
 
         /**
+         * @method
          * @param {String} eventsName 事件名称；选填，不设置该参数的时候则解绑所有事件的所有回调函数
          * @param {Function} callback 事件回调函数；选填，不设置该参数的时候则删除eventsName对应事件的所有回调函数，如果两个参数均设置，则只删除eventName对应和callback函数相同的回调函数
          * @return {PubSub} 当前实例（对象）
@@ -73,6 +75,7 @@ var PubSub = createClass({
         },
         
         /**
+         * @method
          * @param {String} eventsName 事件名称；必填
          * @return {PubSub} 当前实例（对象）
          * @description 触发事件
@@ -100,6 +103,7 @@ var PubSub = createClass({
         },
         
         /**
+         * @method
          * @param {String} eventsName 事件名称；必填
          * @param {Function} callback 事件回调函数；选填，如果添加了该参数，则将callback函数绑定到eventName事件中，如果没有该参数，则触发名字为: eventName的事件
          * @return {PubSub} 当前实例（对象）
@@ -119,6 +123,7 @@ var PubSub = createClass({
         },
 
         /**
+         * @method
          * @param {String} eventsName 事件名称；选填，不设置该参数的时候则解绑所有事件的所有回调函数
          * @param {Function} callback 事件回调函数；选填，不设置该参数的时候则删除eventsName对应事件的所有回调函数；如果两个参数均设置，则只删除eventName对应和callback函数相同的回调函数
          * @return {PubSub} 当前对象
@@ -134,6 +139,7 @@ var PubSub = createClass({
         },
         
         /**
+         * @method
          * @param {String} eventName 事件名称
          * @param {Function} callback 事件回调函数
          * @return {PubSub} 当前对象
@@ -157,6 +163,7 @@ var PubSub = createClass({
 });
 
 /**
+ * @function
  * @param {String} eventName 事件名称
  * @param {Function} callback 事件回调函数
  * @description 绑定事件回调函数，充当PubSub类的私有方法，在PubSub类的bind方法中调用
@@ -189,6 +196,7 @@ function bind(eventName, callback) {
 }
 
 /**
+ * @function
  * @param {String} eventName 事件名称
  * @param {Function} callback 事件回调函数
  * @description 解除绑定事件回调函数，充当PubSub类的私有方法，在PubSub类的unbind方法中调用
@@ -243,6 +251,7 @@ function unbind(eventName, callback) {
 }
 
 /**
+ * @function
  * @param {String} eventName 事件名称
  * @description 触发事件，充当PubSub类的私有方法，在PubSub类的trigger方法中调用
  */
@@ -303,6 +312,7 @@ function trigger(eventName) {
 }
 
 /**
+ * @function
  * @param {String} eventsName 事件名称
  * @param {Function} callback 回调函数
  * @description 由于在PubSub中有几个方法支持多事件名称组合，因此在实现中需要将事件名称切割成单个事件名称，在针对单个事件名做对用的处理，该函数即是处理此过程
