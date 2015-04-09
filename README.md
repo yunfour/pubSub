@@ -34,7 +34,7 @@ PubSub是发布/订阅设计模式的JS实现，该模式目的是通过发布/�
 ### 方法详解
 
 
-<a id="method-unbind"></a>
+<a id="method-trigger"></a>
 #### trigger(eventsName, [arg_a, arg_b ...])
 
 触发实例的 eventsName 的事件，并将数据[arg_a, arg_b ..]传入回调函数。例子同 bind() 方法的例子。
