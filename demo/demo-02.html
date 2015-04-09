@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>通过PubSub开发组件</title>
+
+<script src="../lib/seajs/2.0.0/sea.js"></script>
+</head>
+
+<body>
+
+<button id="J-btn">弹出对话框</button>
+
+<script type="text/javascript">
+/*
+ * 一般组件业务比较复杂，可以通过自定义事件的
+ * 方式来降低和其他对象的耦合关系，如果其他对
+ * 象关注该组件，则只需要订阅其对应的消息即可
+ * 如下例：
+ */
+
+seajs.use(['../lib/createClass/0.0.1/createClass.js', '../lib/jquery/1.7.2/jquery.js', '../dist/pubSub.js'], function(createClass, $, pubSub) {
+    
+    var PubSub = pubSub.exports;
+    
+    /*
+     * 通过该例子创建一个Dialog组件，该组件以PubSub作为父类，
+     * 以使其拥有处理自定义事件的能力
+     */
+    var Dialog = createClass({
+        
+        // 父类：PubSub
+        superClass: [PubSub],
+        
+        // 初始化函数
+        init: function(options) {
+            
+            var that = this;
+            
+            var opts = $.extend({
+                width: 300,
+                height: 'auto',
+                title: '对话框'
+            }, options || {});
+            
+            var tmpl = [
+                '<div style="background:#fff;position:absolute;z-index:100;display:none">',
+                    '<h4 class="J-title" style="height:30px;padding:0 10px;margin:0;font-size:14px;line-height:30px;background:#ddd;">',
+                        opts.title,
+                    '</h4>',
+                    
+                    '<div class="J-content" style="padding:15px;background:#eee;"></div>',
+                    
+                    '<a class="J-close" href="javascript:;" style="height:14px;width:14px;text-align:center;line-height:14px;font-size:12px;color:#333;text-decoration:none;display:block;position:absolute;right:10px;top:10px;">×</a>',
+                '</div>'
+            ].join('');
+            
+            var dialogEle = $(tmpl);
+            
+            dialogEle.appendTo('body');
+            
+            dialogEle.on('click', 'a.J-close', function() {
+                
+                that.hide();
+            });
+            
+            dialogEle.css({
+                width: opts.width,
+                height: opts.height
+            });
+            
+            that.setAttr({
+                dialogEle: dialogEle,
+                options: opts
+            });
+        },
+        
+        // 定义方法
+        methods: {
+            
+            /**
+             * @method
+             * @description 显示对话框
+             */
+            show: function() {
+                
+                var that = this;
+                
+                var dialogEle = that.getAttr('dialogEle');
+                
+                if(dialogEle.css('display') === 'none') {
+                    
+                    dialogEle.css('display', 'block');
+                    
+                    // 此时显示将对话框显示出来，则主动触发实例的show事件
+                    that.trigger('show');
+                }
+                
+                return that;
+            },
+            
+            /**
+             * @method
+             * @description 隐藏对话框
+             */
+            hide: function() {
+                
+                var that = this;
+                
+                var dialogEle = that.getAttr('dialogEle');
+                
+                if(dialogEle.css('display') !== 'none') {
+                    
+                    dialogEle.css('display', 'none');
+                    
+                    // 此时显示将对话框隐藏起来，则主动触发实例的hide事件
+                    that.trigger('hide');
+                }
+                
+                return that;
+            },
+            
+            /**
+             * @method
+             * @param {Number} left 水平坐标
+             * @param {Number} top 垂直坐标
+             * @description 定位对话框
+             */
+            position: function(left, top) {
+                
+                var that = this;
+                
+                var dialogEle = that.getAttr('dialogEle');
+                
+                left = left || 0;
+                top = top || 0;
+                
+                dialogEle.css({
+                    left: left,
+                    top: top
+                });
+                
+                // 触发position事件，并把新坐标传给回调函数
+                that.trigger('position', left, top);
+                
+                return that;
+            },
+            
+            /**
+             * @method
+             * @param {Number} width 宽度
+             * @param {Number} height 高度
+             * @description 设置对话框尺寸
+             */
+            setSize: function(width, height) {
+                
+                var that = this;
+                
+                var dialogEle = that.getAttr('dialogEle'),
+                    options   = that.getAttr('options');
+                
+                width = width || options.width;
+                height = height || options.height;
+                
+                options.width = width;
+                options.height = height;
+                
+                dialogEle.css({
+                    width: width,
+                    height: height
+                });
+                
+                // 触发setsize事件，并把新尺寸传给回调函数
+                that.trigger('setsize', width, width);
+                
+                return that;
+            },
+            
+            /**
+             * @method
+             * @param {Object} content 对话框内容，支持html代码
+             * @description 设置对话框内容
+             */
+            setContent: function(content) {
+                
+                var that = this;
+                
+                var dialogEle = that.getAttr('dialogEle');
+                
+                dialogEle.find('.J-content').empty().append(content);
+                
+                return that;
+            },
+            
+            /**
+             * @method
+             * @param {String} title 对话框标题
+             * @description 色绘制对话框标题栏文本
+             */
+            setTitle: function(title) {
+                
+                var that = this;
+                
+                var options = that.getAttr('options'),
+                    dialogEle = that.getAttr('dialogEle');
+                
+                title = title || options.title;
+                
+                options.title = title;
+                
+                dialogEle.find('h4.J-title').html(title);
+                
+                return that;
+            }
+        }
+    });
+    
+    /*
+     * 现在有一个需求：点击按钮时显示对话框并将对话框定位到按钮的正下方，并将按钮的背景颜色
+     * 设置为白色，对话框关闭时，将按钮的背景颜色设置为红色
+     */
+    var btn = $('#J-btn');
+    var dialog = new Dialog();
+    
+    dialog.setContent('<p style="padding:30px;text-align:center;">这是一个对话框</p>');
+    
+    btn.click(function() {
+        
+        var offset = btn.offset();
+        
+        // 显示对话框，并将其位置定位到按钮的正下方
+        dialog.show().position(offset.left, offset.top + 30);
+    });
+    
+    // 根据需求，我们可以监听对话框的show事件和hide事件，在事件触发是改变按钮的背景颜色
+    dialog.bind('show', function() {
+        
+        // 对话框显示，把按钮背景颜色设置为白色
+        btn.css('background', 'white');
+    });
+    
+    dialog.bind('hide', function() {
+        
+        // 对话框隐藏，把按钮背景颜色设置为红色
+        btn.css('background', 'red');
+    });
+    
+    // 还可以设置对话框标题
+    dialog.setTitle('哈哈，我是一个对话框');
+    
+    // 设置尺寸
+    dialog.setSize(500);
+});
+</script>
+</body>
+</html>

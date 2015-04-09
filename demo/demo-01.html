@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>创建PubSub实例</title>
+
+<script src="../lib/seajs/2.0.0/sea.js"></script>
+</head>
+
+<body>
+
+<script type="text/javascript">
+seajs.use('../dist/pubSub', function(PubSub) {
+    
+    PubSub = PubSub.exports;
+    
+    var eventor = new PubSub();
+    
+    function changeFn() {
+        
+        // change事件触发是打印下面信息
+        console.log('Trigger change event');
+    }
+    
+    // 订阅（监听）change事件
+    eventor.bind('change', changeFn);
+    
+    eventor.trigger('change'); // 此时输出：Trigger change event
+    
+    // 取消订阅的change事件
+    eventor.unbind('change', changeFn);
+    
+    // 此时重新触发change事件，则不会输出任何信息
+    eventor.trigger('change'); // 无信息输出
+    
+    // 通过on/off方法监听、触发、取消事件
+    eventor.on('change', changeFn); // 使用on订阅change事件
+    
+    // 使用on方法可以触发change事件发生
+    eventor.on('change');   // 此时输出：Trigger change event
+    
+    eventor.off('change', changeFn); // off方法可以解除事件绑定，和unbind方法一样作用
+    
+    eventor.on('change');  // 再次触发则没有任何输出
+    
+    // 通过once()方法监听的事件，只会触发执行一次
+    eventor.once('change', changeFn);
+    
+    eventor.on('change');  // 第一次触发，此时输出：Trigger change event
+    eventor.on('change');  // 第二次触发，此时没有任何输出，只执行了一次
+});
+</script>
+</body>
+</html>

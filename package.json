@@ -1,0 +1,19 @@
+{
+  "name": "pubSub",
+  "version": "0.0.1",
+  "description": "发布/订阅模式的实现",
+  "main": "pubSub.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": ""
+  },
+  "author": "yunfour@qq.com",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.1.0"
+  }
+}
