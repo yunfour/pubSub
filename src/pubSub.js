@@ -4,7 +4,7 @@
  * @version: 0.0.1
  */
 
-var createClass = require('../lib/createClass/0.0.1/createClass');
+var createClass = require('createClass/0.0.1/createClass');
 
 // 事件名称分割字符
 var SPLITTER = ',';

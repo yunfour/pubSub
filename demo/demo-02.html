@@ -5,6 +5,21 @@
 <title>通过PubSub开发组件</title>
 
 <script src="../lib/seajs/2.0.0/sea.js"></script>
+<script type="text/javascript">
+(function(seajs) {
+    
+    seajs.config({
+        
+        base: './../',
+        
+        paths: {
+            
+            createClass: 'lib/createClass',
+            jquery: 'lib/jquery'
+        }
+    });
+})(seajs);
+</script>
 </head>
 
 <body>
@@ -19,7 +34,7 @@
  * 如下例：
  */
 
-seajs.use(['../lib/createClass/0.0.1/createClass.js', '../lib/jquery/1.7.2/jquery.js', '../dist/pubSub.js'], function(createClass, $, pubSub) {
+seajs.use(['createClass/0.0.1/createClass.js', 'jquery/1.7.2/jquery.js', '../dist/pubSub.js'], function(createClass, $, pubSub) {
     
     var PubSub = pubSub.exports;
     
