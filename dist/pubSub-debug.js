@@ -1,4 +1,4 @@
-define(function(require, module, exports) {
+define(function(require, exports, module) {
 /**
  * @author: yunfour
  * @email: yunfour@163.com

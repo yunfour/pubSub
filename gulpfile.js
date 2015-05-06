@@ -44,7 +44,7 @@ gulp.on('task_stop', function(ev) {
     
     var distFiles = fs.readdirSync(path);
     
-    var filePrefix = 'define(function(require, module, exports) {',
+    var filePrefix = 'define(function(require, exports, module) {',
         fileSuffix = '});',
         lineBreak = '';
     
